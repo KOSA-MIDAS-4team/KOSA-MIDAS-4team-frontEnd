@@ -87,6 +87,7 @@ const Day = (props) => {
                 }
             >
                 {props.formattedDate}
+                {workTime.startedAt !== undefined ? workTime.totalMinutes >= 480 ? <span className='exceed'>&nbsp;&nbsp;초과</span> : <span className='shortage'>&nbsp;&nbsp;미달</span> : <></>}
 
             </span>
             {workTime.startedAt !== undefined ? <><div>

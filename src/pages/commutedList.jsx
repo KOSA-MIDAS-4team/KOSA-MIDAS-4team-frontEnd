@@ -35,7 +35,7 @@ const CommutedList = () => {
                 <Title>현재 출근 중인 직원 명단&nbsp;&nbsp;&nbsp;{commutedCount} / {allCount}</Title>
                 {list.map((data, index) => (
                     <UserBox>
-                        <Img src={data.imgUrl}></Img>
+                        <Img src={data.imgUrl === null ? "https://audition.hanbiton.com/images/common/img_default.jpg" : data.imgUrl} ></Img>
                         <NameBox>{data.name}</NameBox>
                         <DepartmentBox>({data.department})</DepartmentBox>
                     </UserBox>
