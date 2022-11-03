@@ -4,11 +4,7 @@ import { getUserData } from '../user/user';
 
 export const getReaminTime = async () => {
   let respone = 0;
-  let authId = '';
-
-  await getUserData().then(({ data }) => {
-    authId = data.authId;
-  });
+  let authId = await getUserData().authId;
 
   if (localStorage.getItem('authId')) {
     await axios
