@@ -1,8 +1,9 @@
 import styled from "styled-components"     
 import { Link } from "react-router-dom"
+import { useState } from "react";
 
 const Header = () => {
-    const IsCommuted = false;
+    const [IsCommuted, setIsCommuted] = useState(false);
     const imgSrc  = '';
     return (
         <HeaderContainer>
@@ -10,16 +11,18 @@ const Header = () => {
                 <Logo>CMMS</Logo>
                 {!IsCommuted ?
                 <>
-                <CommuteButton color="#8CE99A">출근</CommuteButton> 
+                <CommuteButton color="#8CE99A" onClick={() => {setIsCommuted(!IsCommuted)}}>출근</CommuteButton> 
                 <TimeBox></TimeBox>
                 </>
                 : 
                 <>
-                <CommuteButton color="#FF6B6B">퇴근</CommuteButton>
+                <CommuteButton color="#FF6B6B" onClick={() => {setIsCommuted(!IsCommuted)}}>퇴근</CommuteButton>
                 <TimeBox>출근한지 01:20:30</TimeBox>
                 </>}
                 <Nav>
-                    <a>출근 인원</a>
+                    <Link>
+                    출근 인원
+                    </Link>
                 </Nav>
                 <User src={imgSrc === '' ? 'https://audition.hanbiton.com/images/common/img_default.jpg' : imgSrc}></User>
             </Items>
@@ -54,6 +57,8 @@ const Logo = styled.div`
     color: #6C63FF;
 `
 
+
+
 const CommuteButton = styled.button`
     width: 130px;
     height: 55px;
@@ -72,6 +77,10 @@ const TimeBox = styled.div`
 `
 
 const Nav = styled.div`
+    a{
+        text-decoration: none;
+        color: black;
+    }
 `
 
 const User = styled.img`
