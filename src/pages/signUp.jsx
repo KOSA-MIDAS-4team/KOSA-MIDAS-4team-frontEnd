@@ -8,7 +8,7 @@ const SignUp = () => {
     pw: '',
     pwCheck: '',
     name: '',
-    department: '',
+    department: 'personnel',
   });
   const [pwMode, setPwMode] = useState(true);
   const [pwCheckMode, setPwCheckMode] = useState(true);
@@ -25,7 +25,9 @@ const SignUp = () => {
     } else if (name === 'pw' || name === 'pwCheck') {
       newData = value.replace(/[^\w!@#$%.?\-_*]/, '');
     } else if (name === 'name') {
-      newData = value.replace(/[^\w가-훻]/, '');
+      newData = value.replace(/[^\wㄱ-ㅎ가-힣]/, '');
+    } else if (name === 'department') {
+      return value;
     }
 
     return newData;
@@ -33,13 +35,17 @@ const SignUp = () => {
 
   const changeSignUpData = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
 
     const newValue = signUpDataFormat(name, value);
 
     setSignUpData((pre) => ({ ...pre, [name]: newValue }));
   };
 
-  const onSignIn = () => {};
+  const onSignUp = () => {
+    if (signUpData.pw === signUpData.pwCheck) {
+    }
+  };
 
   return (
     <SignUpPage>
@@ -94,14 +100,18 @@ const SignUp = () => {
           <InputWrap>
             <Label>부서</Label>
             <LoginInputWrap>
-              <IdInput
+              <DepartmentSelect
                 name="department"
                 value={signUpData.department}
                 onChange={changeSignUpData}
-              />
+              >
+                <option value="personnel">인사</option>
+                <option value="marketing">마케팅</option>
+                <option value="developer">개발</option>
+              </DepartmentSelect>
             </LoginInputWrap>
           </InputWrap>
-          <SignIn onClick={onSignIn}>로그인</SignIn>
+          <SignUpBtn onClick={onSignUp}>로그인</SignUpBtn>
         </SignUpSection>
       </SignUpContanier>
     </SignUpPage>
@@ -114,7 +124,7 @@ const Title = styled.h1`
   margin-bottom: 30px;
 `;
 
-const SignIn = styled.button`
+const SignUpBtn = styled.button`
   width: 100%;
   height: 50px;
   background-color: #6c63ff;
@@ -164,6 +174,19 @@ const IdInput = styled.input`
 
   font-size: 16px;
   padding: 0 7px;
+`;
+
+const DepartmentSelect = styled.select`
+  outline: none;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+
+  font-size: 16px;
+  padding: 0 7px;
+
+  background-color: white;
 `;
 
 const PwInput = styled(IdInput)`
