@@ -9,26 +9,27 @@ const WeekWorkinghours = () => {
   const [allTime, setAllTime] = useState(0);
   const [showProgress, setShowProgress] = useState(false);
 
-  useEffect(() => {
-    getReaminTime().then(({ remainingMinutes }) =>
-      setAllTime(remainingMinutes),
-    );
-    setShowProgress(true);
-  }, []);
-
-  useEffect(() => {
+  const getData = async () => {
+    const { remainingMinutes: time } = await getReaminTime();
+    setAllTime(time);
     setRemainTime({
-      h: Math.floor(allTime / 60),
-      m: allTime % 60,
+      h: Math.floor(time / 60),
+      m: time % 60,
     });
 
-    const workAll = 2400 - allTime;
+    const workAll = 2400 - time;
     setAllWorkingTime(workAll);
     setWorkingTime({
       h: Math.floor(workAll / 60),
       m: workAll % 60,
     });
-  }, [allTime]);
+  };
+
+  useEffect(() => {
+    getData().then(() => {
+      setShowProgress(true);
+    });
+  }, []);
 
   return (
     <WeekWorkinghoursSection>
