@@ -10,7 +10,7 @@ export const loginApi = ({ authId, password }) => {
     .then((res) => {
       const { accessToken, refreshToken } = res.data;
       saveToken(accessToken, refreshToken);
-      window.location.replace("/");
+      window.location.replace('/');
     })
 
     .catch((err) => {

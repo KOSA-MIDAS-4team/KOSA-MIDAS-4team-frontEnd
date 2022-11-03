@@ -1,6 +1,6 @@
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek } from 'date-fns';
 import { isSameMonth, isSameDay, addDays, parse, format } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import "./cells.style.css";
 import axios from "axios"
 
@@ -9,7 +9,7 @@ const Cells = ({ currentMonth, selectedDate, onDateClick }) => {
     const monthEnd = endOfMonth(monthStart);
     const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
-
+    
     const rows = [];
     let days = [];
     let day = startDate;
@@ -38,7 +38,8 @@ const Cells = ({ currentMonth, selectedDate, onDateClick }) => {
 
 const Day = (props) => {
     const [workTime, setWorkTime] = useState({});
-    useEffect(() => {
+    
+    useLayoutEffect(() => {
         async function draw() {
             if (isSameMonth(props.day, props.monthStart)) {
                 var today = props.formattedDate
