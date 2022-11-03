@@ -17,7 +17,7 @@ const Header = () => {
                 : 
                 <>
                 <CommuteButton color="#FF6B6B" onClick={() => {setIsCommuted(!IsCommuted)}}>퇴근</CommuteButton>
-                <TimeBox>출근한지 01:20:30</TimeBox>
+                <TimeBox>출근한지&nbsp;&nbsp;01:20:30</TimeBox>
                 </>}
                 <Nav>
                     <Link>
