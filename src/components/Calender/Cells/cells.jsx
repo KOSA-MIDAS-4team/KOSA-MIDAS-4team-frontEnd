@@ -1,8 +1,8 @@
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek } from 'date-fns';
 import { isSameMonth, isSameDay, addDays, parse, format } from 'date-fns';
-import { useEffect, useState } from 'react';
-import './cells.style.css';
-import axios from 'axios';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import "./cells.style.css";
+import axios from "axios"
 import { useNavigate } from 'react-router-dom';
 
 const Cells = ({ currentMonth, selectedDate, onDateClick }) => {
@@ -47,7 +47,6 @@ const Cells = ({ currentMonth, selectedDate, onDateClick }) => {
 
 const Day = (props) => {
   const navigate = useNavigate();
-
   const [workTime, setWorkTime] = useState({});
   useEffect(() => {
     async function draw() {

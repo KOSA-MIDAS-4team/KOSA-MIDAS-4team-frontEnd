@@ -1,114 +1,99 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { format } from 'date-fns';
+import styled from "styled-components"
+import { Link } from "react-router-dom"
+import { useEffect, useLayoutEffect, useState } from "react";
+import axios from "axios"
+import { format } from "date-fns";
 const Header = () => {
-  const [IsCommuted, setIsCommuted] = useState(true);
-  const [todayInfo, setTodayInfo] = useState({});
-  const imgSrc = '';
-  async function commute() {
-    await axios
-      .post(
-        'http://13.209.36.143:8081/commute?where=HOME',
-        {},
-        {
-          headers: {
-            Authorization: localStorage.getItem('accessToken'),
-          },
-        },
-      )
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-  async function quite() {
-    await axios
-      .put(
-        'http://13.209.36.143:8081/commute',
-        {},
-        {
-          headers: {
-            Authorization: localStorage.getItem('accessToken'),
-          },
-        },
-      )
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-  useEffect(() => {
-    const nowDate = new Date();
-    var today = format(nowDate, 'd');
-    if (today.length === 1) {
-      today = '0' + today;
+    const [IsCommuted, setIsCommuted] = useState(true);
+    const [todayInfo, setTodayInfo] = useState({});
+    const [user, setUser] = useState({});
+    const imgSrc = '';
+    async function commute() {
+        await axios.post("http://13.209.36.143:8081/commute?where=HOME", {}, {headers: {
+                Authorization: localStorage.getItem("accessToken"),
+            }}
+        )
+            .then(res => {
+                console.log(res.data);
+                window.location.replace("/")
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
-    const requestDay = `${format(nowDate, 'yyyy')}-${format(
-      nowDate,
-      'M',
-    )}-${today}`;
-    console.log(requestDay);
-    axios
-      .get(`http://13.209.36.143:8081/user/date?date=${requestDay}`, {
-        headers: {
-          Authorization: localStorage.getItem('accessToken'),
-        },
-      })
-      .then((res) => {
-        if (
-          res.data.startedAt === res.data.endedAt ||
-          res.data.startedAt === undefined
-        ) {
-          setIsCommuted(false);
-        } else {
-          setIsCommuted(true);
+    async function quite() {
+        await axios.put("http://13.209.36.143:8081/commute", {}, {headers: {
+                Authorization: localStorage.getItem("accessToken"),
+            }}
+        )
+            .then(res => {
+                console.log(res.data);
+                window.location.replace("/")
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+    
+    useLayoutEffect(() => {
+        const nowDate = new Date();
+        var today = format(nowDate, "d");
+        if (today.length === 1) {
+            today = '0' + today;
         }
-      });
-  }, []);
-
-  return (
-    <HeaderContainer>
-      <Items>
-        <Link to="/" style={{ textDecoration: 'none' }}>
-          <Logo>CMMS</Logo>
-        </Link>
-        {!IsCommuted ? (
-          <>
-            <CommuteButton color="#8CE99A" onClick={commute}>
-              출근
-            </CommuteButton>
-            <TimeBox></TimeBox>
-          </>
-        ) : (
-          <>
-            <CommuteButton color="#FF6B6B" onClick={quite}>
-              퇴근
-            </CommuteButton>
-            <TimeBox>출근한지&nbsp;&nbsp;01:20:30</TimeBox>
-          </>
-        )}
-        <Nav>
-          <Link>출근 인원</Link>
-        </Nav>
-        <Link to="/myPage">
-          <User
-            src={
-              imgSrc === ''
-                ? 'https://audition.hanbiton.com/images/common/img_default.jpg'
-                : imgSrc
+        const requestDay = `${format(nowDate, "yyyy")}-${format(nowDate, "M")}-${today}`
+        console.log(requestDay);
+        axios.get(`http://13.209.36.143:8081/user/date?date=${requestDay}`, {
+            headers: {
+                Authorization: localStorage.getItem("accessToken"),
             }
-          ></User>
-        </Link>
-      </Items>
-    </HeaderContainer>
-  );
-};
+        })
+        .then(res => {
+            if(res.data.startedAt === res.data.endedAt && res.data.startedAt !== undefined){
+                setIsCommuted(true)
+            }
+            else{
+                setIsCommuted(false)
+            }
+        })
+        axios.get("http://13.209.36.143:8081/user", {
+            headers: {
+                Authorization: localStorage.getItem("accessToken"),
+            }
+        })
+        .then(res => {
+            console.log(res.data)
+            setUser(res.data);
+        })
+    }, []);
+    console.log(user.imgUrl + "user")
+    return (
+        <HeaderContainer>
+            <Items>
+                <Logo>CMMS</Logo>
+                {!IsCommuted ?
+                    <>
+                        <CommuteButton color="#8CE99A" onClick={commute}>출근</CommuteButton>
+                        <TimeBox></TimeBox>
+                    </>
+                    :
+                    <>
+                        <CommuteButton color="#FF6B6B" onClick={quite}>퇴근</CommuteButton>
+                        <TimeBox>출근한지&nbsp;&nbsp;01:20:30</TimeBox>
+                    </>}
+                <Nav>
+                    <Link>
+                        출근 인원
+                    </Link>
+                </Nav>
+                <UserBox>
+                    <Link to="/myPage"><User src={user.imgUrl === null ? 'https://audition.hanbiton.com/images/common/img_default.jpg' : user.imgUrl}></User></Link>
+                    {user.name}
+                </UserBox>
+            </Items>
+        </HeaderContainer>
+    )
+}
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -162,8 +147,15 @@ const Nav = styled.div`
 `;
 
 const User = styled.img`
-  border-radius: 50%;
-  width: 3vw;
-  height: 3vw;
-`;
+    border-radius: 50%;
+    width: 3vw;
+    height: 3vw;
+    margin-bottom: 5px; 
+`
+const UserBox = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
 export default Header;
+
