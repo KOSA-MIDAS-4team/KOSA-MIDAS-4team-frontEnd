@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { loginImg, TextMode, PwMode } from '../assets';
+import { loginApi } from '../utils/api/auth/login';
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
-    id: '',
-    pw: '',
+    authId: '',
+    password: '',
   });
   const [pwMode, setPwMode] = useState(true);
 
@@ -14,9 +15,9 @@ const Login = () => {
   const loginDataFormat = (name, value) => {
     let newData = '';
 
-    if (name === 'id') {
+    if (name === 'authId') {
       newData = value.replace(/\W/, '');
-    } else if (name === 'pw') {
+    } else if (name === 'password') {
       newData = value.replace(/[^\w!@#$%.?\-_*]/, '');
     }
 
@@ -24,7 +25,7 @@ const Login = () => {
   };
 
   const changeLoginData = (e) => {
-    if (e.target.name !== 'id' && e.target.name !== 'pw') {
+    if (e.target.name !== 'authId' && e.target.name !== 'password') {
       throw new Error('Unknown "name" value');
     }
 
@@ -35,7 +36,9 @@ const Login = () => {
     setLoginData((pre) => ({ ...pre, [name]: newValue }));
   };
 
-  const onSignIn = () => {};
+  const onSignIn = () => {
+    loginApi(loginData);
+  };
 
   return (
     <LoginPage>
@@ -47,8 +50,8 @@ const Login = () => {
             <Label>아이디</Label>
             <LoginInputWrap>
               <IdInput
-                name="id"
-                value={loginData.id}
+                name="authId"
+                value={loginData.authId}
                 onChange={changeLoginData}
               />
             </LoginInputWrap>
@@ -57,8 +60,8 @@ const Login = () => {
             <Label>비밀번호</Label>
             <LoginInputWrap>
               <PwInput
-                name="pw"
-                value={loginData.pw}
+                name="password"
+                value={loginData.password}
                 onChange={changeLoginData}
                 type={pwMode ? 'password' : 'text'}
               />
