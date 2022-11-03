@@ -145,7 +145,7 @@ const Header = () => {
                         <TimeBox>출근한지&nbsp;&nbsp;{flowTime}</TimeBox>
                     </>}
                 <Nav>
-                    <Link>
+                    <Link to="/list">
                         출근 인원
                     </Link>
                 </Nav>
