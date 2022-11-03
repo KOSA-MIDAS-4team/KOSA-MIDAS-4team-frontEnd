@@ -1,16 +1,22 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { getUserData } from '../../utils/api/user/user';
 
 const UserProfile = () => {
-  const userInfo = {
-    name: '배준수',
-    department: '개발',
-  };
+  const [userData, setUserData] = useState({ name: '', department: '' });
+
+  useEffect(() => {
+    getUserData().then(({ data }) => {
+      setUserData({ name: data.name, department: data.department });
+    });
+  }, []);
+
   return (
     <UserProfileWrap>
       <Profile></Profile>
       <UserInfoWrap>
-        <Name>{userInfo.name}</Name>
-        <Department>{userInfo.department}</Department>
+        <Name>{userData.name}</Name>
+        <Department>{userData.department}</Department>
       </UserInfoWrap>
       <MyDataPatch htmlFor="profileFileInput">프로필 사진 변경</MyDataPatch>
       <input
