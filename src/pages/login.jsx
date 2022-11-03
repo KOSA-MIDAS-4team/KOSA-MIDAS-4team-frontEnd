@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { loginImg, TextMode, PwMode } from '../assets';
 import { loginApi } from '../utils/api/auth/login';
@@ -69,11 +70,25 @@ const Login = () => {
             </LoginInputWrap>
           </InputWrap>
           <SignIn onClick={onSignIn}>로그인</SignIn>
+          <Link to={'/signUp'}>
+            <SignUpShortcut>회원가입</SignUpShortcut>
+          </Link>
         </LoginSection>
       </LoginContanier>
     </LoginPage>
   );
 };
+
+const SignUpShortcut = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  margin-top: 8px;
+  font-size: 15px;
+  color: #666;
+  text-decoration: underline;
+`;
 
 const Title = styled.h1`
   font-size: 30px;

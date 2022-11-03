@@ -87,7 +87,7 @@ const Header = () => {
                     </Link>
                 </Nav>
                 <UserBox>
-                    <User src={user.imgUrl === null ? 'https://audition.hanbiton.com/images/common/img_default.jpg' : user.imgUrl}></User>
+                    <Link to="/myPage"><User src={user.imgUrl === null ? 'https://audition.hanbiton.com/images/common/img_default.jpg' : user.imgUrl}></User></Link>
                     {user.name}
                 </UserBox>
             </Items>
@@ -96,57 +96,55 @@ const Header = () => {
 }
 
 const HeaderContainer = styled.div`
-    width: 100%;
-    height: 95px;
-    position: fixed;
-    top: 0;
-    border-bottom: 2px solid #E2E2E2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    z-index: 7;
-`
+  width: 100%;
+  height: 95px;
+  position: fixed;
+  top: 0;
+  border-bottom: 2px solid #e2e2e2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  z-index: 7;
+`;
 
 const Items = styled.div`
-    width: 64%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;  
-`
+  width: 64%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
 const Logo = styled.div`
-    font-size: 60px;
-    font-weight: 700;
-    color: #6C63FF;
-`
-
-
+  font-size: 60px;
+  font-weight: 700;
+  color: #6c63ff;
+`;
 
 const CommuteButton = styled.button`
-    width: 130px;
-    height: 55px;
-    color: white;
-    font-weight: 400;
-    font-size: 30px;
-    line-height: 36px;
-    background: ${(props) => (props.color)};
-    border-radius: 8px;
-    border: none;
-`
+  width: 130px;
+  height: 55px;
+  color: white;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 36px;
+  background: ${(props) => props.color};
+  border-radius: 8px;
+  border: none;
+`;
 
 const TimeBox = styled.div`
-    font-weight: 400;
-    font-size: 30px;
-`
+  font-weight: 400;
+  font-size: 30px;
+`;
 
 const Nav = styled.div`
-    a{
-        text-decoration: none;
-        color: black;
-    }
-`
+  a {
+    text-decoration: none;
+    color: black;
+  }
+`;
 
 const User = styled.img`
     border-radius: 50%;
@@ -160,3 +158,4 @@ const UserBox = styled.div`
 `
 
 export default Header;
+

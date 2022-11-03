@@ -1,23 +1,35 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { getUserData } from '../../utils/api/user/user';
 
 const UserProfile = () => {
-  const userInfo = {
-    name: '배준수',
-    department: '개발',
-  };
+  const [userData, setUserData] = useState({ name: '', department: '' });
+
+  useEffect(() => {
+    getUserData().then(({ data }) => {
+      setUserData({ name: data.name, department: data.department });
+    });
+  }, []);
+
   return (
     <UserProfileWrap>
       <Profile></Profile>
       <UserInfoWrap>
-        <Name>{userInfo.name}</Name>
-        <Department>{userInfo.department}</Department>
+        <Name>{userData.name}</Name>
+        <Department>{userData.department}</Department>
       </UserInfoWrap>
-      <MyDataPatch>내 정보 수정</MyDataPatch>
+      <MyDataPatch htmlFor="profileFileInput">프로필 사진 변경</MyDataPatch>
+      <input
+        id="profileFileInput"
+        accept="image/*"
+        type="file"
+        style={{ display: 'none' }}
+      />
     </UserProfileWrap>
   );
 };
 
-const MyDataPatch = styled.button`
+const MyDataPatch = styled.label`
   width: fit-content;
   height: fit-content;
   background-color: transparent;
