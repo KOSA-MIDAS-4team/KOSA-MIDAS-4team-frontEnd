@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
 import { loginImg, TextMode, PwMode } from '../assets';
+import { signUpApi } from '../utils/api/auth/signUp';
 
 const SignUp = () => {
   const [signUpData, setSignUpData] = useState({
-    id: '',
-    pw: '',
-    pwCheck: '',
+    authId: '',
+    password: '',
+    checkPassword: '',
     name: '',
-    department: 'personnel',
+    department: 'PERSONNEL',
   });
   const [pwMode, setPwMode] = useState(true);
   const [pwCheckMode, setPwCheckMode] = useState(true);
@@ -20,9 +22,9 @@ const SignUp = () => {
   const signUpDataFormat = (name, value) => {
     let newData = '';
 
-    if (name === 'id') {
+    if (name === 'authId') {
       newData = value.replace(/\W/, '');
-    } else if (name === 'pw' || name === 'pwCheck') {
+    } else if (name === 'password' || name === 'checkPassword') {
       newData = value.replace(/[^\w!@#$%.?\-_*]/, '');
     } else if (name === 'name') {
       newData = value.replace(/[^\wㄱ-ㅎ가-힣]/, '');
@@ -43,8 +45,25 @@ const SignUp = () => {
   };
 
   const onSignUp = () => {
-    if (signUpData.pw === signUpData.pwCheck) {
+    if (signUpData.password !== signUpData.checkPassword) {
+      const toast = Swal.mixin({
+        toast: true,
+        position: 'top-right',
+        customClass: {
+          popup: 'colored-toast',
+        },
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+      });
+
+      toast.fire({
+        icon: 'warning',
+        title: 'Success',
+      });
     }
+
+    signUpApi(signUpData);
   };
 
   return (
@@ -57,8 +76,8 @@ const SignUp = () => {
             <Label>아이디</Label>
             <LoginInputWrap>
               <IdInput
-                name="id"
-                value={signUpData.id}
+                name="authId"
+                value={signUpData.authId}
                 onChange={changeSignUpData}
               />
             </LoginInputWrap>
@@ -77,8 +96,8 @@ const SignUp = () => {
             <Label>비밀번호</Label>
             <LoginInputWrap>
               <PwInput
-                name="pw"
-                value={signUpData.pw}
+                name="password"
+                value={signUpData.password}
                 onChange={changeSignUpData}
                 type={pwMode ? 'password' : 'text'}
               />
@@ -86,11 +105,18 @@ const SignUp = () => {
             </LoginInputWrap>
           </InputWrap>
           <InputWrap>
-            <Label>비밀번호 체크</Label>
+            <Label>
+              비밀번호 체크
+              <b>
+                {signUpData.password === signUpData.checkPassword
+                  ? ''
+                  : '  비밀번호가 다릅니다'}
+              </b>
+            </Label>
             <LoginInputWrap>
               <PwInput
-                name="pwCheck"
-                value={signUpData.pwCheck}
+                name="checkPassword"
+                value={signUpData.checkPassword}
                 onChange={changeSignUpData}
                 type={pwCheckMode ? 'password' : 'text'}
               />
@@ -105,9 +131,9 @@ const SignUp = () => {
                 value={signUpData.department}
                 onChange={changeSignUpData}
               >
-                <option value="personnel">인사</option>
-                <option value="marketing">마케팅</option>
-                <option value="developer">개발</option>
+                <option value="PERSONNEL">인사</option>
+                <option value="MARKETING">마케팅</option>
+                <option value="DEVELOPMENT">개발</option>
               </DepartmentSelect>
             </LoginInputWrap>
           </InputWrap>
@@ -151,8 +177,16 @@ const InputWrap = styled.div`
 
 const Label = styled.p`
   margin: 0;
+  display: flex;
+  align-items: center;
   margin-bottom: 4px;
   font-size: 18px;
+
+  b {
+    font-weight: normal;
+    color: red;
+    font-size: 16px;
+  }
 `;
 
 const LoginInputWrap = styled.div`
