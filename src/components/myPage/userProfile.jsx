@@ -12,12 +12,18 @@ const UserProfile = () => {
         <Name>{userInfo.name}</Name>
         <Department>{userInfo.department}</Department>
       </UserInfoWrap>
-      <MyDataPatch>내 정보 수정</MyDataPatch>
+      <MyDataPatch htmlFor="profileFileInput">프로필 사진 변경</MyDataPatch>
+      <input
+        id="profileFileInput"
+        accept="image/*"
+        type="file"
+        style={{ display: 'none' }}
+      />
     </UserProfileWrap>
   );
 };
 
-const MyDataPatch = styled.button`
+const MyDataPatch = styled.label`
   width: fit-content;
   height: fit-content;
   background-color: transparent;
