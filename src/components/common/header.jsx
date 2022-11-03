@@ -70,7 +70,9 @@ const Header = () => {
     return (
         <HeaderContainer>
             <Items>
+            <Link to="/" style={{ textDecoration: 'none' }}>
                 <Logo>CMMS</Logo>
+            </Link>
                 {!IsCommuted ?
                     <>
                         <CommuteButton color="#8CE99A" onClick={commute}>출근</CommuteButton>
