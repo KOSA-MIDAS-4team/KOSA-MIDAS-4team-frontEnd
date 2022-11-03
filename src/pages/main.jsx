@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Header from '../components/common/header';
 import { format, addMonths, subMonths } from "date-fns";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Days from '../components/Calender/days';
 import Cells from '../components/Calender/Cells/cells';
 import { MdOutlineNavigateNext } from "react-icons/md"
@@ -19,6 +19,11 @@ const Main = () => {
     const nextMonth = () => {
         setCurrentMonth(addMonths(currentMonth, 1));
     };
+    useEffect(() => {       
+        if(localStorage.getItem("accessToken") === null){
+            window.location.replace("/login");
+        }
+    }, []);
     return (
         <>
         <Header />
@@ -77,10 +82,12 @@ const DateBox = styled.div`
 const Month = styled.div`
     font-size: 4vw;
     color: #6C63FF;
+    
 `
 const Year = styled.div`
     font-size: 2vw;
     color: #6C63FF;
+    
 `
 
 export default Main;
