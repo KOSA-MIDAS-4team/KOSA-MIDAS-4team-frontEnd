@@ -1,5 +1,10 @@
+import Header from "./components/common/header";
+import Main from "./pages/main";
+
 function App() {
-  return <div></div>;
+  return (
+    <Main></Main>
+  );
 }
 
 export default App;
