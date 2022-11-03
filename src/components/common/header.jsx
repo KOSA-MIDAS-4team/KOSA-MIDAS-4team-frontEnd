@@ -1,27 +1,51 @@
-import styled from "styled-components"     
+import styled from "styled-components"
 import { Link } from "react-router-dom"
 import { useState } from "react";
-
+import axios from "axios"
 const Header = () => {
-    const [IsCommuted, setIsCommuted] = useState(false);
-    const imgSrc  = '';
+    const [IsCommuted, setIsCommuted] = useState(true);
+    const imgSrc = '';
+    async function commute() {
+        await axios.post("http://13.209.36.143:8081/commute?where=HOME", {}, {headers: {
+                Authorization: localStorage.getItem("accessToken"),
+            }}
+        )
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+    async function quite() {
+        await axios.put("http://13.209.36.143:8081/commute", {}, {headers: {
+                Authorization: localStorage.getItem("accessToken"),
+            }}
+        )
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
     return (
         <HeaderContainer>
             <Items>
                 <Logo>CMMS</Logo>
                 {!IsCommuted ?
-                <>
-                <CommuteButton color="#8CE99A" onClick={() => {setIsCommuted(!IsCommuted)}}>출근</CommuteButton> 
-                <TimeBox></TimeBox>
-                </>
-                : 
-                <>
-                <CommuteButton color="#FF6B6B" onClick={() => {setIsCommuted(!IsCommuted)}}>퇴근</CommuteButton>
-                <TimeBox>출근한지&nbsp;&nbsp;01:20:30</TimeBox>
-                </>}
+                    <>
+                        <CommuteButton color="#8CE99A" onClick={commute}>출근</CommuteButton>
+                        <TimeBox></TimeBox>
+                    </>
+                    :
+                    <>
+                        <CommuteButton color="#FF6B6B" onClick={quite}>퇴근</CommuteButton>
+                        <TimeBox>출근한지&nbsp;&nbsp;01:20:30</TimeBox>
+                    </>}
                 <Nav>
                     <Link>
-                    출근 인원
+                        출근 인원
                     </Link>
                 </Nav>
                 <User src={imgSrc === '' ? 'https://audition.hanbiton.com/images/common/img_default.jpg' : imgSrc}></User>
