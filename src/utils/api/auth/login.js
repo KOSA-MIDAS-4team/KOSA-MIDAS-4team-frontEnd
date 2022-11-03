@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { saveToken } from '../../functions/token/toeken';
+import { saveToken, saveUserData } from '../../functions/token/toeken';
 
 export const loginApi = ({ authId, password }) => {
   axios
@@ -11,6 +11,7 @@ export const loginApi = ({ authId, password }) => {
       const { accessToken, refreshToken } = res.data;
       saveToken(accessToken, refreshToken);
       window.location.replace("/");
+      saveUserData(authId);
     })
 
     .catch((err) => {
