@@ -1,11 +1,12 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios"
 import { format } from "date-fns";
 const Header = () => {
     const [IsCommuted, setIsCommuted] = useState(true);
     const [todayInfo, setTodayInfo] = useState({});
+    const [user, setUser] = useState({});
     const imgSrc = '';
     async function commute() {
         await axios.post("http://13.209.36.143:8081/commute?where=HOME", {}, {headers: {
@@ -14,6 +15,7 @@ const Header = () => {
         )
             .then(res => {
                 console.log(res.data);
+                window.location.replace("/")
             })
             .catch(err => {
                 console.log(err);
@@ -26,12 +28,14 @@ const Header = () => {
         )
             .then(res => {
                 console.log(res.data);
+                window.location.replace("/")
             })
             .catch(err => {
                 console.log(err);
             })
     }
-    useEffect(() => {
+    
+    useLayoutEffect(() => {
         const nowDate = new Date();
         var today = format(nowDate, "d");
         if (today.length === 1) {
@@ -45,14 +49,24 @@ const Header = () => {
             }
         })
         .then(res => {
-            if(res.data.startedAt === res.data.endedAt || res.data.startedAt === undefined){
-                setIsCommuted(false)
-            }
-            else{
+            if(res.data.startedAt === res.data.endedAt && res.data.startedAt !== undefined){
                 setIsCommuted(true)
             }
+            else{
+                setIsCommuted(false)
+            }
+        })
+        axios.get("http://13.209.36.143:8081/user", {
+            headers: {
+                Authorization: localStorage.getItem("accessToken"),
+            }
+        })
+        .then(res => {
+            console.log(res.data)
+            setUser(res.data);
         })
     }, []);
+    console.log(user.imgUrl + "user")
     return (
         <HeaderContainer>
             <Items>
@@ -72,7 +86,10 @@ const Header = () => {
                         출근 인원
                     </Link>
                 </Nav>
-                <User src={imgSrc === '' ? 'https://audition.hanbiton.com/images/common/img_default.jpg' : imgSrc}></User>
+                <UserBox>
+                    <User src={user.imgUrl === null ? 'https://audition.hanbiton.com/images/common/img_default.jpg' : user.imgUrl}></User>
+                    {user.name}
+                </UserBox>
             </Items>
         </HeaderContainer>
     )
@@ -135,5 +152,11 @@ const User = styled.img`
     border-radius: 50%;
     width: 3vw;
     height: 3vw;
+    margin-bottom: 5px; 
 `
+const UserBox = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
 export default Header;
