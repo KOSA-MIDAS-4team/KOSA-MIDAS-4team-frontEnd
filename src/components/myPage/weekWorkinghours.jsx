@@ -8,7 +8,6 @@ const WeekWorkinghours = () => {
   const [workingTime, setWorkingTime] = useState({ h: 0, m: 0 });
   const [allTime, setAllTime] = useState(0);
   const [showProgress, setShowProgress] = useState(false);
-  const [userData, setUserData] = useState({ name: '', department: '' });
 
   useEffect(() => {
     getReaminTime().then(({ remainingMinutes }) =>

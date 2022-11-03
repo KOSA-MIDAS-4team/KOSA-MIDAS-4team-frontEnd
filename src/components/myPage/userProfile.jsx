@@ -1,19 +1,52 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { getMultitagOfFile } from '../../utils/api/profile/profile';
 import { getUserData } from '../../utils/api/user/user';
 
 const UserProfile = () => {
-  const [userData, setUserData] = useState({ name: '', department: '' });
+  const [userData, setUserData] = useState({
+    name: '',
+    department: '',
+    imgUrl: '',
+  });
+
+  const getData = async () => {
+    const data = await getUserData();
+    setUserData({
+      name: data.name,
+      department: data.department,
+      imgUrl: data.imgUrl,
+    });
+  };
 
   useEffect(() => {
-    getUserData().then(({ data }) => {
-      setUserData({ name: data.name, department: data.department });
-    });
+    getData();
   }, []);
+
+  const onFileChange = async ({ target: { files } }) => {
+    const theFile = files[0];
+
+    // 서버로 전송하기 위한 파일 formData
+    const formData = new FormData();
+    formData.append('image', theFile);
+
+    getMultitagOfFile(formData);
+
+    // 화면에 띄우기 위한 변환작업
+    // const reader = new FileReader();
+    // reader.onloadend = (finishedEvent) => {
+    //   const {
+    //     currentTarget: { result },
+    //   } = finishedEvent;
+
+    //   setImgView(result);
+    // };
+    // await reader.readAsDataURL(theFile);
+  };
 
   return (
     <UserProfileWrap>
-      <Profile></Profile>
+      <Profile img={userData.imgUrl} />
       <UserInfoWrap>
         <Name>{userData.name}</Name>
         <Department>{userData.department}</Department>
@@ -22,6 +55,7 @@ const UserProfile = () => {
       <input
         id="profileFileInput"
         accept="image/*"
+        onChange={onFileChange}
         type="file"
         style={{ display: 'none' }}
       />
@@ -63,6 +97,10 @@ const Profile = styled.div`
   aspect-ratio: 1;
   border-radius: 50%;
   background-color: #d9d9d9;
+  background-image: url(${({ img }) => img});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 const UserProfileWrap = styled.section`
