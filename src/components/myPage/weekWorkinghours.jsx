@@ -60,6 +60,7 @@ const Title = styled.p`
 const WeekWorkinghoursSection = styled.section`
   width: 100%;
   height: fit-content;
+  margin-top: 80px;
 `;
 
 export default WeekWorkinghours;
