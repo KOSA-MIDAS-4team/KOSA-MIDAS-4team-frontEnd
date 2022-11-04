@@ -133,7 +133,9 @@ const Header = () => {
         {!isLoading ? 
             <HeaderContainer>
             <Items>
-                <Link style={{ textDecoration: "none" }} to="/"><Logo>CMMS</Logo></Link>
+                <Link to="/" style={{ textDecoration: 'none' }}>
+                    <Logo>CMMS</Logo>
+                </Link>
                 {!IsCommuted ?
                     <>
                         <CommuteButton color="#8CE99A" onClick={commute}>출근</CommuteButton>
@@ -145,7 +147,7 @@ const Header = () => {
                         <TimeBox>출근한지&nbsp;&nbsp;{flowTime}</TimeBox>
                     </>}
                 <Nav>
-                    <Link>
+                    <Link to="/list">
                         출근 인원
                     </Link>
                 </Nav>
